@@ -54,7 +54,7 @@ public:
         {
             return node->isRed;
         }
-  }
+    }
 
     void rotateRight(Node*& node)
     {
@@ -84,7 +84,7 @@ public:
         node->right->isRed = false;
     }
 
-    void buildTree()
+    /*void buildTree()
     {
         int tempArr[10] = { 3,4,7,1,2,9,8,6,5,10 };
         for (int i = 0; i != 10; i++)
@@ -93,7 +93,7 @@ public:
             insert(root, arr[i]);
         }
     display(root);
-    }
+    }*/
 
     void insert(Node*& node, Node*& vNode)
     {
@@ -139,9 +139,88 @@ public:
         display(node->right);
     }
 };
+class Set : public RBTree
+{
+private:
+    RBTree mySet;
+
+public:
+
+    Set(int* tempArr,int n)
+    {
+        for (int i = 0;i < n; i++)
+        {
+        mySet.arr.push_back(new Node(tempArr[i]));
+        mySet.insert(mySet.root, mySet.arr[i]);
+        }
+    }
+
+    bool contains(int x)
+    {
+        auto t = mySet.root;
+        while(t != NULL)
+        {
+            if(x < t->val)
+            {
+                t=t->left;
+            }
+            else if(x > t->val)
+            {
+                t=t->right;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void insert_set(int tmp)
+    {
+        if (!contains(tmp))
+        {
+            mySet.arr.push_back(new Node(tmp));
+            insert(mySet.root, mySet.arr.back());
+        }
+        else
+        {
+            std::cout << tmp << " is exist" << "\n";
+        }
+    }
+
+    void delete_set(int tmp)
+    {
+
+    }
+
+    void displaySet()
+    {
+        if (mySet.root == NULL)
+        {
+            std::cout << "Set is empty!" << "\n";
+            return;
+        }
+        RBTree::display(mySet.root);
+    }
+};
 int main()
 {
-    RBTree rbtree;
-    rbtree.buildTree();
+    //RBTree rbtree;
+    //rbtree.buildTree();
+
+    //std::cout << "\n";
+
+    int arr[] = {3,4,7,1,2,9,8,6,5,10};
+    Set set(arr,10);
+
+    set.insert_set(7);
+    set.insert_set(10);
+    set.insert_set(0);
+    set.insert_set(12);
+    set.insert_set(11);
+
+    set.displaySet();
+
     return 0;
 }
